@@ -16,7 +16,8 @@ export default function LoginPage() {
     setError('')
     try {
       const provider = new GoogleAuthProvider()
-      const result   = await signInWithPopup(auth, provider)
+      provider.setCustomParameters({ prompt: 'select_account' })
+      const result = await signInWithPopup(auth, provider)
 
       if (result.user.email !== AUTHORIZED_EMAIL) {
         await auth.signOut()
@@ -24,12 +25,23 @@ export default function LoginPage() {
         return
       }
 
-      // Cookie de session pour le middleware
       document.cookie = 'artvault-session=1; path=/; max-age=86400'
       router.replace('/')
     } catch (err: unknown) {
-      if (err instanceof Error && err.message.includes('popup-closed')) return
-      setError('Une erreur est survenue. Réessayez.')
+      const code = (err as { code?: string }).code ?? ''
+      if (code === 'auth/popup-closed-by-user' || code === 'auth/cancelled-popup-request') {
+        setLoading(false)
+        return
+      }
+      if (code === 'auth/unauthorized-domain') {
+        setError('Domaine non autorisé — ajoutez ce domaine dans Firebase Console → Authentication → Authorized domains.')
+      } else if (code === 'auth/operation-not-allowed') {
+        setError('Google Sign-In non activé — activez-le dans Firebase Console → Authentication → Sign-in method.')
+      } else if (code === 'auth/popup-blocked') {
+        setError('Popup bloquée par le navigateur — autorisez les popups pour ce site.')
+      } else {
+        setError(`Erreur : ${code || (err instanceof Error ? err.message : 'inconnue')}`)
+      }
     } finally {
       setLoading(false)
     }
