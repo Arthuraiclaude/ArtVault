@@ -2,32 +2,64 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ── CSS variables — dark (default) / light ── */
-:root {
-  --bg-primary:   #fafaf7;
-  --bg-surface:   #f0ece4;
-  --bg-surface-2: #e8e4dc;
-  --text-primary: #0a0a0a;
-  --text-muted:   #888880;
-  --border:       #d4cfc5;
+/* ── CSS Variables — DARK (défaut) ── */
+.dark, :root {
+  --bg:        #0a0a0a;
+  --bg2:       #111111;
+  --bg3:       #1a1a1a;
+  --border:    rgba(255,255,255,0.07);
+  --text:      #f0ece4;
+  --text2:     rgba(240,236,228,0.4);
+  --text3:     rgba(240,236,228,0.2);
+  --gold:      #c9a84c;
+  --gold2:     rgba(201,168,76,0.12);
+  --gold3:     rgba(201,168,76,0.06);
+  --positive:  #4caf7d;
+  --negative:  #e05c5c;
+
+  /* Aliases rétro-compatibilité composants existants */
+  --bg-primary:   var(--bg);
+  --bg-surface:   var(--bg2);
+  --bg-surface-2: var(--bg3);
+  --text-primary: var(--text);
+  --text-muted:   var(--text2);
 }
 
-.dark {
-  --bg-primary:   #0a0a0a;
-  --bg-surface:   #141414;
-  --bg-surface-2: #1a1a1a;
-  --text-primary: #f0ece4;
-  --text-muted:   #666660;
-  --border:       #2a2a2a;
+/* ── CSS Variables — LIGHT ── */
+:root:not(.dark) {
+  --bg:        #f5f2ec;
+  --bg2:       #eee9e0;
+  --bg3:       #e6e0d5;
+  --border:    rgba(0,0,0,0.08);
+  --text:      #1a1612;
+  --text2:     rgba(26,22,18,0.45);
+  --text3:     rgba(26,22,18,0.2);
+  --gold:      #9a6f1e;
+  --gold2:     rgba(154,111,30,0.12);
+  --gold3:     rgba(154,111,30,0.06);
+  --positive:  #2e7d52;
+  --negative:  #b84040;
+
+  --bg-primary:   var(--bg);
+  --bg-surface:   var(--bg2);
+  --bg-surface-2: var(--bg3);
+  --text-primary: var(--text);
+  --text-muted:   var(--text2);
 }
 
+/* ── Body ── */
 body {
-  background-color: var(--bg-primary);
-  color: var(--text-primary);
-  transition: background-color 0.3s ease, color 0.3s ease;
+  background-color: var(--bg);
+  color:            var(--text);
+  transition:       background-color 0.3s ease, color 0.3s ease;
+  /* Gradient doré très subtil */
+  background-image:
+    radial-gradient(ellipse 70% 50% at 10% 90%, rgba(201,168,76,0.05) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 40% at 90% 10%, rgba(201,168,76,0.03) 0%, transparent 70%);
+  background-attachment: fixed;
 }
 
-/* ── Animation initial state (opacity 0 before running) ── */
+/* ── Animations ── */
 .animate-fade-up,
 .animate-fade-up-1,
 .animate-fade-up-2,
@@ -38,14 +70,14 @@ body {
 
 /* ── Scrollbar ── */
 ::-webkit-scrollbar        { width: 4px; }
-::-webkit-scrollbar-track  { background: var(--bg-surface); }
-::-webkit-scrollbar-thumb  { background: #c9a84c33; }
-::-webkit-scrollbar-thumb:hover { background: #c9a84c66; }
+::-webkit-scrollbar-track  { background: var(--bg2); }
+::-webkit-scrollbar-thumb  { background: rgba(201,168,76,0.2); }
+::-webkit-scrollbar-thumb:hover { background: rgba(201,168,76,0.4); }
 
 /* ── Selection ── */
 ::selection {
-  background: #c9a84c22;
-  color: #c9a84c;
+  background: rgba(201,168,76,0.15);
+  color:      var(--gold);
 }
 
 /* ── Font smoothing ── */
@@ -54,9 +86,10 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* ── Input / select reset ── */
+/* ── Input number — remove spinners ── */
 input[type='number']::-webkit-inner-spin-button,
 input[type='number']::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
+input[type='number'] { -moz-appearance: textfield; }

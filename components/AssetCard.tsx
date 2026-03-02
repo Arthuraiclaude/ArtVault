@@ -1,17 +1,19 @@
 'use client'
 
+import WowCoin from '@/components/WowCoin'
+
 interface AssetCardProps {
-  title: string
-  amount: number
+  title:       string
+  amount:      number
   description: string
-  delay: 'animate-fade-up-1' | 'animate-fade-up-2' | 'animate-fade-up-3'
-  isLoading: boolean
+  delay:       'animate-fade-up-1' | 'animate-fade-up-2' | 'animate-fade-up-3'
+  isLoading:   boolean
 }
 
 const fmt = (n: number) =>
   new Intl.NumberFormat('fr-FR', {
-    style: 'currency',
-    currency: 'EUR',
+    style:                 'currency',
+    currency:              'EUR',
     minimumFractionDigits: 0,
     maximumFractionDigits: 0,
   }).format(n)
@@ -19,13 +21,21 @@ const fmt = (n: number) =>
 export default function AssetCard({ title, amount, description, delay, isLoading }: AssetCardProps) {
   return (
     <div
-      className={`p-6 group cursor-default ${delay}`}
-      style={{ backgroundColor: 'var(--bg-surface)' }}
+      className={`p-6 group cursor-default ${delay} transition-all duration-300`}
+      style={{ backgroundColor: 'var(--bg2)' }}
+      onMouseEnter={e => {
+        e.currentTarget.style.borderTopColor   = '#c9a84c'
+        e.currentTarget.style.transform        = 'translateY(-2px)'
+      }}
+      onMouseLeave={e => {
+        e.currentTarget.style.borderTopColor   = 'transparent'
+        e.currentTarget.style.transform        = 'translateY(0)'
+      }}
     >
       {/* Catégorie */}
       <p
         className="text-[10px] tracking-[0.28em] uppercase mb-5"
-        style={{ color: 'var(--text-muted)' }}
+        style={{ color: 'var(--text2)' }}
       >
         {title}
       </p>
@@ -34,19 +44,20 @@ export default function AssetCard({ title, amount, description, delay, isLoading
       {isLoading ? (
         <div
           className="h-10 w-36 animate-pulse mb-3"
-          style={{ backgroundColor: 'var(--bg-surface-2)' }}
+          style={{ backgroundColor: 'var(--bg3)' }}
         />
       ) : (
         <p
-          className="font-serif font-light text-4xl mb-2 transition-colors duration-300 group-hover:text-gold"
-          style={{ color: 'var(--text-primary)', letterSpacing: '-0.01em' }}
+          className="font-serif font-light text-4xl mb-2 flex items-center"
+          style={{ color: 'var(--text)', letterSpacing: '-0.01em' }}
         >
           {fmt(amount)}
+          <WowCoin size={18} />
         </p>
       )}
 
       {/* Description */}
-      <p className="text-[11px]" style={{ color: 'var(--text-muted)' }}>
+      <p className="text-[11px]" style={{ color: 'var(--text2)' }}>
         {description}
       </p>
 
