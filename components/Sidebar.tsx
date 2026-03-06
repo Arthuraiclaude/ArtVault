@@ -7,13 +7,23 @@ import { usePathname } from 'next/navigation'
 const NAV = [
   {
     href:  '/',
-    label: 'Dashboard',
+    label: 'Patrimoine',
     icon: (
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
         <rect x="3" y="3" width="7" height="7" />
         <rect x="14" y="3" width="7" height="7" />
         <rect x="3" y="14" width="7" height="7" />
         <rect x="14" y="14" width="7" height="7" />
+      </svg>
+    ),
+  },
+  {
+    href:  '/budget',
+    label: 'Budget',
+    icon: (
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="2" y="5" width="20" height="14" rx="1" />
+        <path d="M2 10h20M7 15h2M12 15h5" />
       </svg>
     ),
   },
